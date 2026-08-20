@@ -107,16 +107,33 @@ with no reference behind it is a guess, and guesses cost the caller more than th
 
 ## Phase 4 — Report
 
-Return one review with three sections, each ordered most severe first:
+Put every finding from all three passes — security, correctness, and Nautobot conventions — into one
+list. Sort that list into these four groups, in this order:
 
 ```
-## Security
-## Correctness
-## Nautobot conventions
+## MUST FIX
+## SHOULD FIX
+## CONSIDER
+## FOLLOW UP
 ```
 
-For each finding give the file and line, one sentence stating the defect, one sentence on what goes
-wrong in practice, and the fix. For a convention finding, add the reference that supports it.
+Give each finding exactly one group. Use this table to pick the group:
+
+| Group | Give a finding this group when |
+|---|---|
+| MUST FIX | The change breaks something, or leaks data, or loses data. A security defect, a crash, a wrong result, a model change with no migration, or an import from an internal `nautobot.*` path. Merge the change and Nautobot users get hurt. |
+| SHOULD FIX | The change works but breaks a Nautobot convention. A missing serializer, filterset, form, table, or registration. A bare Django view or test case class in place of the Nautobot one. A missing changelog fragment. Merge the change and the next maintainer pays for it. |
+| CONSIDER | The change is correct and follows the conventions, but a simpler or more idiomatic form exists. The caller can decline this and lose nothing. |
+| FOLLOW UP | The work belongs in a separate change, or you could not settle the question from the diff alone. Say what the caller must check and where. |
+
+If two groups fit, take the more severe one. Security findings never go below MUST FIX.
+
+Order the findings inside each group most severe first.
+
+Start each finding with its source pass in bold, so the caller can tell where it came from:
+`**Security**`, `**Correctness**`, or `**Nautobot**`. Then give the file and line, one sentence
+stating the defect, one sentence on what goes wrong in practice, and the fix. For a `**Nautobot**`
+finding, add the reference that supports it.
 
 Under a `## Notes` heading at the end, state:
 
@@ -124,4 +141,5 @@ Under a `## Notes` heading at the end, state:
 - Any reference file that was missing or empty.
 - That nothing was posted and no file was changed.
 
-If a section has no findings, write `None found.` under it. Do not pad the report to fill it.
+If a group has no findings, write `None found.` under it. Do not pad the report to fill it, and do
+not move a finding to a lighter group to spread the findings out.
