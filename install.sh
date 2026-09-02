@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 #
-# Install this repo's skills and agents into ~/.claude by symlink.
+# Install this repo's skills, agents and rules into ~/.claude by symlink.
 #
 # Symlinks mean an edit in this repo takes effect immediately, and `git pull`
 # updates your live Claude Code setup.
@@ -78,7 +78,7 @@ install_dir() {
 
     [ -d "$src_dir" ] || return 0
 
-    # Skills are directories; agents are .md files.
+    # Skills are directories; agents and rules are .md files.
     local entries=()
     if [ "$kind" = "skills" ]; then
         for e in "$src_dir"/*/; do
@@ -111,6 +111,7 @@ echo
 
 install_dir skills
 install_dir agents
+install_dir rules
 
 echo
 if [ "$DRY_RUN" -eq 1 ]; then

@@ -1,7 +1,7 @@
 # claude-skills
 
-Skills and agents for [Claude Code](https://claude.com/claude-code), kept in git and installed into
-`~/.claude` by symlink.
+Skills, agents and rules for [Claude Code](https://claude.com/claude-code), kept in git and installed
+into `~/.claude` by symlink.
 
 ## Layout
 
@@ -10,6 +10,7 @@ The repo mirrors the `~/.claude` layout, so installation is a direct mapping.
 ```
 skills/<skill-name>/SKILL.md   ->  ~/.claude/skills/<skill-name>
 agents/<agent-name>.md         ->  ~/.claude/agents/<agent-name>.md
+rules/<rule-name>.md           ->  ~/.claude/rules/<rule-name>.md
 ```
 
 ## Install
@@ -80,6 +81,22 @@ Use the nautobot-review agent on this branch
 
 The agent stops and tells you to run `/nautobot-references` first if the references are missing. A
 review without them is an ordinary code review.
+
+### `rules/` (rules)
+
+Standing preferences that apply to every project, written as checkable rules rather than prose.
+
+| Rule | What it settles |
+| --- | --- |
+| `python-comments-and-docstrings.md` | No `#` comments outside tool directives. Terse Google-style docstrings. All documentation in Simplified Technical English (ASD-STE100). |
+| `pull-request-descriptions.md` | Use the repository's PR template. Terse bullets. No session link, no remaining-work section, no code-standard section. `Closes: DNE` when no issue exists. |
+
+Claude Code does not load `~/.claude/rules/` on its own. Point at a rule from `~/.claude/CLAUDE.md`,
+from a project's `CLAUDE.md`, or from a memory file, or name the file in a session:
+
+```
+Follow ~/.claude/rules/pull-request-descriptions.md
+```
 
 ## Usage order
 
