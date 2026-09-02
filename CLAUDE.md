@@ -4,8 +4,8 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## What this repository is
 
-This repository holds Claude Code skills and agents as version-controlled markdown. It contains no
-application code. `install.sh` symlinks each entry into `~/.claude`, so an edit here changes the live
+This repository holds Claude Code skills, agents and rules as version-controlled markdown. It contains
+no application code. `install.sh` symlinks each entry into `~/.claude`, so an edit here changes the live
 Claude Code setup immediately.
 
 Content is prompt text. The "code" is the instructions an agent follows, so a change is correct only
@@ -33,12 +33,18 @@ them one to one:
 ```
 skills/<name>/SKILL.md   ->  ~/.claude/skills/<name>      (directory symlink)
 agents/<name>.md         ->  ~/.claude/agents/<name>.md   (file symlink)
+rules/<name>.md          ->  ~/.claude/rules/<name>.md    (file symlink)
+home/<file>              ->  ~/.claude/<file>             (file symlink)
 ```
 
-`install_dir` in `install.sh` links skill *directories* and agent *.md files*. A new top-level kind
-(for example `commands/`) needs a new `install_dir` call and a matching entry rule.
+`home/` is the exception: it maps to `~/.claude` itself, not to a subdirectory of the same name.
+`install_home` links it.
 
-The `name:` field in a skill's or agent's YAML frontmatter must match its directory or file name.
+`install_dir` in `install.sh` links skill *directories*; every other kind links *.md files*. A new
+top-level kind (for example `commands/`) needs a new `install_dir` call and a matching entry rule.
+
+The `name:` field in a skill's, agent's or rule's YAML frontmatter must match its directory or file
+name.
 
 ## How the two pieces fit together
 
@@ -86,6 +92,20 @@ any edit to that agent.
 
 Every convention finding must cite a reference file and a diff line. A finding with no reference
 behind it is dropped.
+
+## Rules
+
+`rules/` holds standing preferences that apply across projects. A rule is not a skill and not an
+agent: nothing invokes it, and Claude Code does not load `~/.claude/rules/` on its own. `home/CLAUDE.md`
+is what loads them, with one `@` line for each.
+
+Adding a rule is two edits. Write `rules/<name>.md`, then add its `@` line to `home/CLAUDE.md`. A rule
+with no line is installed but never read.
+
+Write a rule the way the other files here are written: checkable statements, not prose. State what
+not to do beside what to do. Give an example where the wrong choice is tempting.
+
+Keep each rule to one subject. A rule that settles two unrelated questions is two rules.
 
 ## Writing style for skills and agents
 

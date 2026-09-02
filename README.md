@@ -1,7 +1,7 @@
 # claude-skills
 
-Skills and agents for [Claude Code](https://claude.com/claude-code), kept in git and installed into
-`~/.claude` by symlink.
+Skills, agents, rules and the global `CLAUDE.md` for [Claude Code](https://claude.com/claude-code),
+kept in git and installed into `~/.claude` by symlink.
 
 ## Layout
 
@@ -10,7 +10,11 @@ The repo mirrors the `~/.claude` layout, so installation is a direct mapping.
 ```
 skills/<skill-name>/SKILL.md   ->  ~/.claude/skills/<skill-name>
 agents/<agent-name>.md         ->  ~/.claude/agents/<agent-name>.md
+rules/<rule-name>.md           ->  ~/.claude/rules/<rule-name>.md
+home/<file>                    ->  ~/.claude/<file>
 ```
+
+`home/` maps to `~/.claude` itself, for a file that has no subdirectory.
 
 ## Install
 
@@ -80,6 +84,32 @@ Use the nautobot-review agent on this branch
 
 The agent stops and tells you to run `/nautobot-references` first if the references are missing. A
 review without them is an ordinary code review.
+
+### `rules/` (rules)
+
+Standing preferences that apply to every project, written as checkable rules rather than prose.
+
+| Rule | What it settles |
+| --- | --- |
+| `python-comments-and-docstrings.md` | No `#` comments outside tool directives. Terse Google-style docstrings. All documentation in Simplified Technical English (ASD-STE100). |
+| `pull-request-descriptions.md` | Use the repository's PR template. Terse bullets. No session link, no remaining-work section, no code-standard section. `Closes: DNE` when no issue exists. |
+| `changelog-fragments.md` | Written for an end user, not a developer. At most three items, one per line, terse, in Simplified Technical English. |
+
+Claude Code does not load `~/.claude/rules/` on its own. `home/CLAUDE.md` below is what turns them
+on. A project's own `CLAUDE.md` overrides a rule where the two disagree.
+
+### `home/CLAUDE.md`
+
+The global `CLAUDE.md`, installed to `~/.claude/CLAUDE.md`. It imports every rule, so each one loads
+in every session:
+
+```
+@~/.claude/rules/python-comments-and-docstrings.md
+@~/.claude/rules/pull-request-descriptions.md
+@~/.claude/rules/changelog-fragments.md
+```
+
+Add an `@` line here when you add a rule. A rule with no line is installed but never read.
 
 ## Usage order
 
