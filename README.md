@@ -64,6 +64,55 @@ Run it:
 
 Re-run it after a Nautobot release, or whenever the references look stale.
 
+### `python-references` (skill)
+
+Fetches the current Python, Ruff, mypy, pytest, uv, Pydantic and Typer documentation, then writes
+Python best-practice reference files to `~/.claude/references/python/`.
+
+It is a sibling of `nautobot-references`, not a replacement. The two skills share a shape: fetch
+fresh on every run, discover pages from a live index, and record the version and the source URL
+behind each rule.
+
+Discovery uses whatever live index each source publishes. PEPs come from `peps.python.org/api/peps.json`,
+which also gives the live status of each PEP, so a superseded one never becomes a rule. Ruff, uv and
+Typer come from their sitemaps. CPython, mypy, pytest, Pydantic, the Packaging User Guide and the
+OWASP cheat sheets come from the GitHub contents API, because their Read the Docs sitemaps list
+versions rather than pages. Three pages publish no index at all, and they sit in one clearly marked
+block in `references/sources.md`.
+
+Versions come from the PyPI JSON API and from `endoflife.date`, not from GitHub releases, which
+returns nothing for several of these repositories.
+
+Output:
+
+```
+~/.claude/references/python/
+├── INDEX.md              versions, file map, sources, gaps
+├── style.md              layout, naming, imports, docstrings, the Ruff default rule set
+├── typing.md             what to annotate, generics, unions, type parameters, mypy strictness
+├── packaging.md          pyproject.toml, build backend, metadata, dependency groups, lockfiles
+├── project-layout.md     src layout, package names, entry points, __main__
+├── testing.md            fixtures, conftest.py, parametrize, markers, tmp_path, coverage
+├── errors-and-logging.md exception hierarchy, chaining, loggers, levels, logging.config
+├── async.md              tasks, task groups, cancellation, timeouts, blocking calls, pitfalls
+├── pydantic.md           v2 models, fields, validators, model_config, serialization, settings
+├── cli.md                argparse and Typer, help text, exit codes, streams
+├── security.md           subprocess, secrets, path traversal, pickle, YAML, injection
+└── tooling.md            Ruff, mypy, pre-commit and uv keys, and the CI invocation for each
+```
+
+Every file except `INDEX.md` ends with a `## Reviewer checklist`: five to ten yes-or-no questions a
+reviewer can answer from a diff alone.
+
+Run it:
+
+```
+/python-references
+```
+
+Re-run it after a Python release, or after a Ruff or mypy release, or whenever the references look
+stale.
+
 ### `nautobot-review` (agent)
 
 Reviews a Nautobot app pull request, branch, or working tree.
@@ -127,5 +176,5 @@ its own. It fixes the load order, and it keeps the whole rule set readable in on
 ## Usage order
 
 1. Install: `./install.sh`
-2. Generate the references once: `/nautobot-references`
+2. Generate the references once: `/python-references`, and `/nautobot-references` for Nautobot work.
 3. Review Nautobot work with the `nautobot-review` agent.

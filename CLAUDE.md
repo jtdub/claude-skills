@@ -65,6 +65,9 @@ The README also lists the ten files. Keep it in step.
 
 ## Skill internals
 
+Both reference skills share this shape. `skills/python-references` is a sibling of
+`skills/nautobot-references`, not a replacement, and neither one generalizes the other.
+
 `SKILL.md` holds the procedure. The two files in `references/` hold data the procedure reads at run
 time, so the procedure stays stable while the data changes:
 
