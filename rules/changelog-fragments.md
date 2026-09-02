@@ -42,19 +42,32 @@ Rank by effect on the reader, in this order:
 Drop everything else. The pull request and the diff hold the rest. A fragment is a
 release note, not a summary of the work.
 
-## Bullets, not prose
+## One item per line, never a paragraph
 
-Write each item as a `*` list item. Never write a paragraph.
+Write one item on one line. A blank line or a wrapped line splits the item in two.
 
-```markdown
-* Added an Agents section under AI Tools, where you build an agent from a model, a prompt, and the tools it may call.
-* Added AI Tools to Git repositories, so a repository can supply tools the same way it supplies Jobs.
-* Added a Prune Agent Threads Job. Nothing else deletes the conversation state an agent leaves behind.
+```
+Added an Agents section under AI Tools, where you build an agent from a model, a prompt, and the tools it may call.
+Added AI Tools to Git repositories, so a repository supplies tools the same way it supplies Jobs.
+Added a Prune Agent Threads Job. Nothing else deletes the conversation state an agent leaves behind.
 ```
 
-- Keep one item on one line where you can. Two lines is the limit.
 - Put one fact in each item. An item with two facts is two items, or one of them goes.
 - Start the item with the verb the type calls for: Added, Changed, Fixed, Removed.
+
+### Do not add your own bullet marker
+
+A towncrier template usually emits the `-` itself and splits the fragment on newlines.
+A `*` or `-` you type becomes a second marker, so the release note reads
+`- [#9](...) - * Added ...`.
+
+Render a draft before you commit, and read the output:
+
+```bash
+towncrier build --version <next> --draft
+```
+
+Add a marker only when the draft shows the template supplies none.
 
 ## Simplified Technical English
 
