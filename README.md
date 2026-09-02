@@ -94,9 +94,17 @@ Standing preferences that apply to every project, written as checkable rules rat
 | `python-comments-and-docstrings.md` | No `#` comments outside tool directives. Terse Google-style docstrings. All documentation in Simplified Technical English (ASD-STE100). |
 | `pull-request-descriptions.md` | Use the repository's PR template. Terse bullets. No session link, no remaining-work section, no code-standard section. `Closes: DNE` when no issue exists. |
 | `changelog-fragments.md` | Written for an end user, not a developer. At most three items, one per line, terse, in Simplified Technical English. |
+| `engineering-workflow.md` | Plan before code across modules. One branch and one PR per unit of work. Tests before API and UI. The spec wins over the prompt. |
+| `verify-against-source.md` | Read the installed package source or the live documentation when unsure about an API. Say which source you read. |
+| `prose-style.md` | No em dashes anywhere. Simplified Technical English for every word written. Cut a sentence that changes nothing. |
+| `session-hygiene.md` | Append a dated lesson to `.claude/LESSONS.md` after a non-trivial task. Propose a `CLAUDE.md` edit, but do not apply it. |
 
-Claude Code does not load `~/.claude/rules/` on its own. `home/CLAUDE.md` below is what turns them
-on. A project's own `CLAUDE.md` overrides a rule where the two disagree.
+`home/CLAUDE.md` below imports each rule with an `@` line. A project's own `CLAUDE.md` overrides a
+rule where the two disagree.
+
+Claude Code also loads `~/.claude/rules/*.md` on its own, so a rule here reaches every session by
+two paths. Source: <https://code.claude.com/docs/en/memory>, read 2026-09-02. The `@` lines stay
+for now, because they also fix the load order.
 
 ### `home/CLAUDE.md`
 
@@ -107,9 +115,14 @@ in every session:
 @~/.claude/rules/python-comments-and-docstrings.md
 @~/.claude/rules/pull-request-descriptions.md
 @~/.claude/rules/changelog-fragments.md
+@~/.claude/rules/engineering-workflow.md
+@~/.claude/rules/verify-against-source.md
+@~/.claude/rules/prose-style.md
+@~/.claude/rules/session-hygiene.md
 ```
 
-Add an `@` line here when you add a rule. A rule with no line is installed but never read.
+Add an `@` line here when you add a rule. Keep the line even though `~/.claude/rules/` also loads on
+its own. It fixes the load order, and it keeps the whole rule set readable in one file.
 
 ## Usage order
 
