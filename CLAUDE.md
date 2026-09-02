@@ -34,7 +34,11 @@ them one to one:
 skills/<name>/SKILL.md   ->  ~/.claude/skills/<name>      (directory symlink)
 agents/<name>.md         ->  ~/.claude/agents/<name>.md   (file symlink)
 rules/<name>.md          ->  ~/.claude/rules/<name>.md    (file symlink)
+home/<file>              ->  ~/.claude/<file>             (file symlink)
 ```
+
+`home/` is the exception: it maps to `~/.claude` itself, not to a subdirectory of the same name.
+`install_home` links it.
 
 `install_dir` in `install.sh` links skill *directories*; every other kind links *.md files*. A new
 top-level kind (for example `commands/`) needs a new `install_dir` call and a matching entry rule.
@@ -92,9 +96,11 @@ behind it is dropped.
 ## Rules
 
 `rules/` holds standing preferences that apply across projects. A rule is not a skill and not an
-agent: nothing invokes it, and Claude Code does not load `~/.claude/rules/` on its own. A rule takes
-effect only when something points at it, such as a `CLAUDE.md` import, a memory file, or a session
-that names the file.
+agent: nothing invokes it, and Claude Code does not load `~/.claude/rules/` on its own. `home/CLAUDE.md`
+is what loads them, with one `@` line for each.
+
+Adding a rule is two edits. Write `rules/<name>.md`, then add its `@` line to `home/CLAUDE.md`. A rule
+with no line is installed but never read.
 
 Write a rule the way the other files here are written: checkable statements, not prose. State what
 not to do beside what to do. Give an example where the wrong choice is tempting.
