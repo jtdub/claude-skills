@@ -93,6 +93,7 @@ Standing preferences that apply to every project, written as checkable rules rat
 | --- | --- |
 | `python-comments-and-docstrings.md` | No `#` comments outside tool directives. Terse Google-style docstrings. All documentation in Simplified Technical English (ASD-STE100). |
 | `pull-request-descriptions.md` | Use the repository's PR template. Terse bullets. No session link, no remaining-work section, no code-standard section. `Closes: DNE` when no issue exists. |
+| `changelog-fragments.md` | Written for an end user, not a developer. At most three bullets, terse, in Simplified Technical English. |
 
 Claude Code does not load `~/.claude/rules/` on its own. `home/CLAUDE.md` below is what turns them
 on. A project's own `CLAUDE.md` overrides a rule where the two disagree.
@@ -105,6 +106,7 @@ in every session:
 ```
 @~/.claude/rules/python-comments-and-docstrings.md
 @~/.claude/rules/pull-request-descriptions.md
+@~/.claude/rules/changelog-fragments.md
 ```
 
 Add an `@` line here when you add a rule. A rule with no line is installed but never read.
