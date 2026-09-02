@@ -68,8 +68,8 @@ The README also lists the ten files. Keep it in step.
 `SKILL.md` holds the procedure. The two files in `references/` hold data the procedure reads at run
 time, so the procedure stays stable while the data changes:
 
-- `sources.md` — which sitemap patterns to select and which GitHub paths to pull. Stage 2 reads it.
-- `outline.md` — the exact section headings for each generated file. Stage 4 reads it.
+- `sources.md`, which sitemap patterns to select and which GitHub paths to pull. Stage 2 reads it.
+- `outline.md`, the exact section headings for each generated file. Stage 4 reads it.
 
 Fixed headings make successive runs diffable. Put new source patterns in `sources.md` and new
 sections in `outline.md`. Do not inline either into `SKILL.md`.
@@ -96,11 +96,13 @@ behind it is dropped.
 ## Rules
 
 `rules/` holds standing preferences that apply across projects. A rule is not a skill and not an
-agent: nothing invokes it, and Claude Code does not load `~/.claude/rules/` on its own. `home/CLAUDE.md`
-is what loads them, with one `@` line for each.
+agent: nothing invokes it. Two paths load it. Claude Code loads `~/.claude/rules/*.md` on its own,
+and `home/CLAUDE.md` imports each one with an `@` line. Source:
+<https://code.claude.com/docs/en/memory>, read 2026-09-02.
 
-Adding a rule is two edits. Write `rules/<name>.md`, then add its `@` line to `home/CLAUDE.md`. A rule
-with no line is installed but never read.
+Adding a rule is two edits. Write `rules/<name>.md`, then add its `@` line to `home/CLAUDE.md`. Keep
+the `@` line even though the directory also loads. It fixes the load order, and it makes the rule
+set readable in one file.
 
 Write a rule the way the other files here are written: checkable statements, not prose. State what
 not to do beside what to do. Give an example where the wrong choice is tempting.
